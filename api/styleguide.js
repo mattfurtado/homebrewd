@@ -24,9 +24,8 @@ router.get('/:classType?/:categoryId?', (req, res) => {
           );
         }
         return res.send(JSON.stringify(styleCategory));
-      } else {
-        return res.send(JSON.stringify(styleClass));
       }
+      return res.send(JSON.stringify(styleClass));
     }
     return res.send(JSON.stringify(styleguide));
   });

@@ -16,9 +16,7 @@ const schema = buildSchema(`
 `);
 
 const root = {
-  hello: () => {
-    return 'Hello world';
-  },
+  hello: () => 'Hello world',
 };
 
 app
@@ -29,7 +27,7 @@ app
     server.use(
       '/graphql',
       graphqlHttp({
-        schema: schema,
+        schema,
         rootValue: root,
         graphiql: true,
       })
@@ -37,9 +35,7 @@ app
 
     server.use('/api/styleguide', styleguide);
 
-    server.get('*', (req, res) => {
-      return handle(req, res);
-    });
+    server.get('*', (req, res) => handle(req, res));
 
     server.listen(3000, error => {
       if (error) throw error;
