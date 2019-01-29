@@ -1,4 +1,6 @@
 const express = require('express');
+const graphqlHttp = require('express-graphql');
+const { buildSchema } = require('graphql');
 const next = require('next');
 
 const styleguide = require('./api/styleguide');
@@ -7,10 +9,31 @@ const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
 const handle = app.getRequestHandler();
 
+const schema = buildSchema(`
+  type Query {
+    hello: String
+  }
+`);
+
+const root = {
+  hello: () => {
+    return 'Hello world';
+  },
+};
+
 app
   .prepare()
   .then(() => {
     const server = express();
+
+    server.use(
+      '/graphql',
+      graphqlHttp({
+        schema: schema,
+        rootValue: root,
+        graphiql: true,
+      })
+    );
 
     server.use('/api/styleguide', styleguide);
 
