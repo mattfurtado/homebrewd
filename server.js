@@ -1,5 +1,7 @@
 const express = require('express');
+const fs = require('fs');
 const next = require('next');
+const xmlParser = require('xml2json');
 
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
@@ -9,6 +11,13 @@ app
   .prepare()
   .then(() => {
     const server = express();
+
+    server.get('/api/styles', (req, res) => {
+      fs.readFile('./static/bjcp-styleguide.xml', (error, data) => {
+        if (error) throw error;
+        res.send(xmlParser.toJson(data));
+      });
+    });
 
     server.get('*', (req, res) => {
       return handle(req, res);
