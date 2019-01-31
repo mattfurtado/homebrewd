@@ -1,6 +1,5 @@
 const express = require('express');
 const graphqlHttp = require('express-graphql');
-const { buildSchema } = require('graphql');
 const next = require('next');
 
 const styleguide = require('./api/styleguide');
