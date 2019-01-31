@@ -4,20 +4,12 @@ const { buildSchema } = require('graphql');
 const next = require('next');
 
 const styleguide = require('./api/styleguide');
+const schema = require('./graphql/schema');
+const resolvers = require('./graphql/resolvers');
 
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
 const handle = app.getRequestHandler();
-
-const schema = buildSchema(`
-  type Query {
-    hello: String
-  }
-`);
-
-const root = {
-  hello: () => 'Hello world',
-};
 
 app
   .prepare()
@@ -28,7 +20,7 @@ app
       '/graphql',
       graphqlHttp({
         schema,
-        rootValue: root,
+        rootValue: resolvers,
         graphiql: true,
       })
     );
